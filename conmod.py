@@ -36,19 +36,31 @@ class User:
         all -= set([u.id for u in user.follows])
         return all
 
+    def timeline(self, posts):
+        myFollows = self.allFollows()
+        myBlocks = self.allBlocks()
+
+        print(myFollows)
+        for post in posts[::-1]:
+            if not post.reply:
+                if post.author.id in myFollows:
+                    print(user.id, post)
+
 class Post:
     def __init__(self, users, posts):
         self.author = random.choice(users)
+        self.reply = False
+        self.ref = 0
         if random.random() > 0.5 and len(posts) > 0:
-            self.replyTo = random.choice(posts)
-        else:
-            self.replyTo = 0
+            self.ref = random.choice(posts)
+            if random.random() < 0.9:
+                self.reply = True
         posts.append(self)
         self.id = len(posts)
 
     def __repr__(self) -> str:
-        if self.replyTo:
-            return "post {} by {} in reply to {}".format(self.id, self.author.id, self.replyTo.id)
+        if self.ref:
+            return "post {} by {} ref {}".format(self.id, self.author.id, self.ref.id)
         else:
             return "post {} by {}".format(self.id, self.author.id)
 
@@ -82,3 +94,5 @@ for i in range(100):
     post = Post(users, posts)
     print(post)
 
+for user in users:
+    user.timeline(posts)
