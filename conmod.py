@@ -44,7 +44,12 @@ class User:
         for post in posts[::-1]:
             if not post.reply:
                 if post.author.id in myFollows:
-                    print(user.id, post)
+                    if post.ref and post.ref.isBlocked(myBlocks):
+                        print(user.id, post, "blocked")
+                    else:
+                        print(user.id, post, "visible")
+                #else:
+                    #print(user.id, post, "not followed")
 
 class Post:
     def __init__(self, users, posts):
@@ -63,6 +68,14 @@ class Post:
             return "post {} by {} ref {}".format(self.id, self.author.id, self.ref.id)
         else:
             return "post {} by {}".format(self.id, self.author.id)
+
+    def isBlocked(self, blocks):
+        print("isBlocked", self, blocks)
+        if self.author.id in blocks:
+            return True
+        if self.ref:
+            return self.ref.isBlocked(blocks)
+        return False
 
 users = []
 for i in range(100):
