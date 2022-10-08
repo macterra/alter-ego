@@ -56,10 +56,15 @@ class Post:
         self.author = random.choice(users)
         self.reply = False
         self.ref = 0
-        if random.random() > 0.5 and len(posts) > 0:
+        self.replies = []
+        self.promotions = []
+        if random.random() > 0.1 and len(posts) > 0:
             self.ref = random.choice(posts)
             if random.random() < 0.9:
                 self.reply = True
+                self.ref.replies.append(self)
+            else:
+                self.ref.promotions.append(self)
         posts.append(self)
         self.id = len(posts)
 
@@ -106,6 +111,9 @@ posts = []
 for i in range(100):
     post = Post(users, posts)
     print(post)
+
+for post in posts:
+    print(post, post.replies, post.promotions)
 
 for user in users:
     user.timeline(posts)
