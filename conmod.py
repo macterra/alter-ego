@@ -40,16 +40,22 @@ class User:
         myFollows = self.allFollows()
         myBlocks = self.allBlocks()
 
-        print(myFollows)
+        print(self, myFollows)
         for post in posts[::-1]:
             if not post.reply:
                 if post.author.id in myFollows:
                     if post.ref and post.ref.isBlocked(myBlocks):
                         print(user.id, post, "blocked")
+                        pass
                     else:
                         print(user.id, post, "visible")
-                #else:
-                    #print(user.id, post, "not followed")
+                        for reply in post.replies:
+                            if reply.isBlocked(myBlocks):
+                                print("  reply", reply, "blocked")
+                            else:
+                                print("  reply", reply, "visible")
+                else:
+                    print(user.id, post, "not followed")
 
 class Post:
     def __init__(self, users, posts):
@@ -75,7 +81,7 @@ class Post:
             return "post {} by {}".format(self.id, self.author.id)
 
     def isBlocked(self, blocks):
-        print("isBlocked", self, blocks)
+        #print("isBlocked", self, blocks)
         if self.author.id in blocks:
             return True
         if self.ref:
@@ -108,7 +114,7 @@ for user in users:
 
 posts = []
 
-for i in range(100):
+for i in range(1000):
     post = Post(users, posts)
     print(post)
 
