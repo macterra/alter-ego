@@ -2,6 +2,13 @@
 
 A content moderation scheme for social media
 
+## Principles
+
+- Everyone should be able to see the content they want
+- Everyone should be able to block the content they don't want
+- No one should be able to make others see content they don't want
+- No one should be able to block the content that others do want to see
+
 ## Accounts
 
 An account is a user in the system.
